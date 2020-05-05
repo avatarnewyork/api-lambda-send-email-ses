@@ -33,3 +33,32 @@ Here are the upcoming changes that I'll add to this serverless component:
 
 - ESLint
 - Tests
+
+## Building locally
+Install and use the SAM CLI to build on your local. 
+```
+sam build
+```
+
+## Running locally
+After building locally you can run the API using the following command:
+```
+sam local start-api --debug --env-vars local/env.json
+```
+
+### Env Overrides
+You can set env variables for your local environment. Sample content for `local/env.json`:
+```
+{
+    "LambdaEmailer": {
+      "FROM_EMAIL": "your@email.com",
+      "DESTINATION_MAPPING": "{\"abc123\": \"destination@mail.com\"}"
+    }
+  }
+```
+
+## Testing Locally
+Once your local API is running you can test it using `curl`. Sample command:
+```
+curl -iX POST -H 'Content-type: application/json' http://127.0.0.1:3000/send -d '{"subject":"SUBJECT","message":"MSG", "toEmails":["abc123"]}'
+```

@@ -1,5 +1,6 @@
 const AWS = require('aws-sdk'),
   SES = new AWS.SES(),
+  destinationMapper = require('./destination-mapper.js'),
   processResponse = require('./process-response.js'),
   FROM_EMAIL = process.env.FROM_EMAIL,
   UTF8CHARSET = 'UTF-8';
@@ -13,6 +14,9 @@ exports.handler = async event => {
     return processResponse(true, 'Please specify email parameters: toEmails, subject, and message ', 400);
   }
   const emailData = JSON.parse(event.body);
+
+  emailData.toEmails = destinationMapper(emailData.toEmails);
+  emailData.ccEmails = destinationMapper(emailData.ccEmails);
 
   if (!emailData.toEmails || !Array.isArray(emailData.toEmails) || !emailData.subject || !emailData.message) {
     return processResponse(true, 'Please specify email parameters: toEmails, subject and message', 400);
