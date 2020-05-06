@@ -33,7 +33,7 @@ Resources:
           DESTINATION_MAPPING: !Ref DestinationMapping
       Policies:
         - SESCrudPolicy:
-            IdentityName: !Ref FromEmail
+            IdentityName: '*'
       Events:
         EmailApi:
           Type: Api
